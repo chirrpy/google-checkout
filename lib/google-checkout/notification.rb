@@ -89,6 +89,10 @@ module GoogleCheckout
       end
     end
 
+    def amount
+      nil
+    end
+
     ##
     # Returns the serial number from the root element.
 
@@ -146,6 +150,10 @@ module GoogleCheckout
 
   class ChargeAmountNotification < Notification
 
+    def amount
+      (@doc/"latest-charge-amount").to_money
+    end
+
     def latest_charge_amount
       (@doc/"latest-charge-amount").to_money
     end
@@ -158,10 +166,14 @@ module GoogleCheckout
 
   class ChargebackAmountNotification < Notification
 
+    def amount
+      (@doc/"latest-chargeback-amount").to_money
+    end
+
     def latest_chargeback_amount
       (@doc/"latest-chargeback-amount").to_money
     end
-    
+
     def total_chargeback_amount
       (@doc/"total-chargeback-amount").to_money
     end
@@ -169,6 +181,13 @@ module GoogleCheckout
   end
 
   class NewOrderNotification < Notification
+
+    ##
+    # Returns a Money object representing the total price of the order.
+
+    def amount
+      (@doc/"order-total").to_money
+    end
 
     ##
     # Returns a Money object representing the total price of the order.
